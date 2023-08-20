@@ -1,0 +1,39 @@
+============================ftp server
+1.部署ftp server
+我们部署在windows上
+E:\zs\ftpserver\*.jar
+
+2.打开windows防火墙
+备注：必须打开公用网络防火墙
+网上那些开放特定端口的方案是不行的
+
+3.启动ftp server
+参考启动脚本:
+E:\zs\ftpserver\start ftp server.bat
+
+4.设置ftp server参数
+please input the server port(default 9999)
+9999
+server will listen on port: 9999
+please enter the server root dir
+E:\zs\ftpserver\target
+
+至此，ftp server就配置好了
+
+============================ftp client
+1.启动ftp client
+FTPClient.java
+
+2.设置ftp client参数
+
+start ftp client ...
+please input the server host(default localhost):
+192.168.0.105
+server host : 192.168.0.105
+please input the server port(default 9999)
+9999
+server port: 9999
+please input the transfered filepath or dir:
+/Users/zhoushuo/Documents/tmp/source
+
+至此，客户端就可以传输文件了
