@@ -28,13 +28,28 @@ public class FTPClient {
 
         File[] files = dir.listFiles();
         for(File file : files){
-            sendFile(host, port, file.getAbsolutePath());
+            /**
+             * 当前文件的父目录名称
+             * 比如当前文件是： /Users/zhoushuo/Documents/tmp/aa.txt
+             * 那么父目录为： tmp
+             */
+            String parentDirName = file.getParentFile().getName();
+            sendFile(host, port, file.getAbsolutePath(), parentDirName);
             System.out.println("finish send file: " + file.getName());
         }
     }
 
 
-    public static void sendFile(String host, int port, String filePath){
+    /**
+     * 文件传输
+     * @param host
+     * @param port
+     * @param filePath
+     * @param dirName 这个字段仅用于dir传输模式下，指定该文件所属的dir
+     *                如果dirName为空，那就是单文件传输模式
+     */
+    public static void sendFile(String host, int port, String filePath, String dirName){
+
         /**
          * FileInfo object -> json
          * json代表这个文件的信息，
@@ -42,6 +57,7 @@ public class FTPClient {
          */
         ObjectMapper objectMapper = new ObjectMapper();
         FileInfo fileInfo = new FileInfo(new File(filePath));
+        fileInfo.setDir(dirName);
         String json = "";
         try {
             json = objectMapper.writeValueAsString(fileInfo);
@@ -86,10 +102,6 @@ public class FTPClient {
                 os.write(buffer, 0, n);
             }
             os.flush();
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -110,6 +122,10 @@ public class FTPClient {
 
 
         System.out.println("finish sending the file ...");
+    }
+
+    public static void sendFile(String host, int port, String filePath){
+        sendFile(host, port, filePath, null);
     }
 
     public static void main(String[] args) {

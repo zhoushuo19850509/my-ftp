@@ -43,8 +43,8 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        com.nbcb.networking.ftp.singlefile.FTPServer
-                                        <!--com.nbcb.networking.ftp.singlefile.FTPClient-->
+                                        <!--com.nbcb.athena.ftpdemo.FTPServer-->
+                                         com.nbcb.athena.ftpdemo.FTPClient
                                     </mainClass>
                                 </manifest>
                             </archive>
