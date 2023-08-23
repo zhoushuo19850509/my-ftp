@@ -37,6 +37,11 @@ public class FTPServer {
         String rootDir = in.nextLine();
         System.out.println("server root dir: " + rootDir);
 
+        if(!(new File(rootDir)).exists()){
+            System.out.println("server root dir not extists!");
+            return;
+        }
+
         System.out.println("start ftp server ...");
 
         /**
@@ -92,15 +97,27 @@ public class FTPServer {
                     long filesize = fileInfo.getFilesize();
 
                     /**
-                     * (3)如果是按照dir形式传输，那么要创建一下该文件的父目录
+                     * (3)如果是按照dir形式传输，那么要尝试创建一下该文件的父目录
+                     * 比如从客户端传过来的parentDir是genlib16
+                     * 服务端的rootPath为： C:\document\root
+                     * 那么服务端要尝试先创建这个目录： C:\document\root\genlib16
                      */
-                    String parentDir = fileInfo.getDir();
+                    String parentDirName = fileInfo.getParentDir();
+                    String rootDirPath = rootDir;
+                    if(null != parentDirName && !parentDirName.equals("") && parentDirName.length() >0){
+                        // 如果有parentDirName，那么服务端的rootPath要加上这个parentDirName
+                        rootDirPath = rootDir + File.separator + parentDirName;
+                        File parentDir = new File(rootDirPath);
+                        if(!parentDir.exists()){
+                            parentDir.mkdir();
+                        }
+                    }
 
 
                     /**
                      * (4)读取文件之前，先判断一下这个文件是否存在
                      */
-                    String targetFilePath = rootDir + File.separator + filename;
+                    String targetFilePath = rootDirPath + File.separator + filename;
                     System.out.println("targetFilePath : " + targetFilePath);
 
                     File preCheckFile = new File(targetFilePath);
@@ -138,17 +155,13 @@ public class FTPServer {
                         System.out.println("filesize verity failed ...");
                     }
                 }finally{
-                    if(null != connection){
-                        connection.close();
-                    }
                     if(null != is){
                         is.close();
                     }
-
+                    if(null != connection){
+                        connection.close();
+                    }
                 }
-
-
-
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -20,6 +20,11 @@ public class FileInfo {
             currentName = currentName.replace("\\","-");
             currentName = currentName.replace("/","-");
             currentName = currentName.replace(":","-");
+            currentName = currentName.replace("\"","-");
+            currentName = currentName.replace("?","-");
+            currentName = currentName.replace("<","-");
+            currentName = currentName.replace(">","-");
+            currentName = currentName.replace("|","-");
 
             /**
              * filename处理二： URL编码，防止中文在传输过程中异常
@@ -64,7 +69,7 @@ public class FileInfo {
      *
      * 在服务端，在保存a.txt之前，需要先创建a.txt所属的dir
      */
-    private String dir;
+    private String parentDir;
 
     public String getFileName() {
         return fileName;
@@ -90,12 +95,12 @@ public class FileInfo {
         this.md5 = md5;
     }
 
-    public String getDir() {
-        return dir;
+    public String getParentDir() {
+        return parentDir;
     }
 
-    public void setDir(String dir) {
-        this.dir = dir;
+    public void setParentDir(String parentDir) {
+        this.parentDir = parentDir;
     }
 
     @Override
@@ -104,7 +109,7 @@ public class FileInfo {
                 "fileName='" + fileName + '\'' +
                 ", filesize=" + filesize +
                 ", md5='" + md5 + '\'' +
-                ", dir='" + dir + '\'' +
+                ", parentDir='" + parentDir + '\'' +
                 '}';
     }
 }

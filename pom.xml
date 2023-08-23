@@ -6,7 +6,7 @@
 
     <groupId>com.nbcb.athena</groupId>
     <artifactId>ftp-demo</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.3</version>
 
     <dependencies>
         <dependency>
@@ -28,8 +28,6 @@
 
     <build>
         <plugins>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -44,7 +42,8 @@
                                 <manifest>
                                     <mainClass>
                                         <!--com.nbcb.athena.ftpdemo.FTPServer-->
-                                         com.nbcb.athena.ftpdemo.FTPClient
+                                        <!--com.nbcb.athena.ftpdemo.FTPClient-->
+                                        com.nbcb.athena.ftpdemo.test.cmdline.CmdClientTest
                                     </mainClass>
                                 </manifest>
                             </archive>

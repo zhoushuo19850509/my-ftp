@@ -17,10 +17,10 @@ public class FTPClient {
      *
      * @param host
      * @param port
-     * @param dirPath /Users/zhoushuo/Downloads/genlib9
+     * @param parentDir /Users/zhoushuo/Downloads/genlib9
      */
-    public static void sendDir(String host, int port, String dirPath){
-        File dir = new File(dirPath);
+    public static void sendDir(String host, int port, String parentDir){
+        File dir = new File(parentDir);
         if(!dir.isDirectory()){
             System.out.println("illegal directory ...");
             return;
@@ -30,8 +30,9 @@ public class FTPClient {
         for(File file : files){
             /**
              * 当前文件的父目录名称
-             * 比如当前文件是： /Users/zhoushuo/Documents/tmp/aa.txt
-             * 那么父目录为： tmp
+             * 比如当前文件是： /Users/zhoushuo/Downloads/genlib9/aaa.pdf
+             * 那么父目录为： genlib9
+             * @TODO 后续如果支持嵌套目录的文件传输，那么这里parent dir要作相应调整
              */
             String parentDirName = file.getParentFile().getName();
             sendFile(host, port, file.getAbsolutePath(), parentDirName);
@@ -45,10 +46,10 @@ public class FTPClient {
      * @param host
      * @param port
      * @param filePath
-     * @param dirName 这个字段仅用于dir传输模式下，指定该文件所属的dir
+     * @param parentDir 这个字段仅用于dir传输模式下，指定该文件所属的dir
      *                如果dirName为空，那就是单文件传输模式
      */
-    public static void sendFile(String host, int port, String filePath, String dirName){
+    public static void sendFile(String host, int port, String filePath, String parentDir){
 
         /**
          * FileInfo object -> json
@@ -57,7 +58,7 @@ public class FTPClient {
          */
         ObjectMapper objectMapper = new ObjectMapper();
         FileInfo fileInfo = new FileInfo(new File(filePath));
-        fileInfo.setDir(dirName);
+        fileInfo.setParentDir(parentDir);
         String json = "";
         try {
             json = objectMapper.writeValueAsString(fileInfo);
